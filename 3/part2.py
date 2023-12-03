@@ -1,36 +1,39 @@
 import re 
 
 def main(lists_of_characterlists):
+
+    
     for x, row in enumerate(lists_of_characterlists):
         for y, char in enumerate(row):
             if char == '*':
                 print("found a *")
-                abovestring = extract_area_as_string(lists_of_characterlists,x-1,y,7,1)
-                middlestring = extract_area_as_string(lists_of_characterlists,x,y,7,1)
-                belowstring = extract_area_as_string(lists_of_characterlists,x+1,y,7,1)
-                print(abovestring)
-                print(middlestring)
-                print(belowstring)
+                top = [0,1]
+                topleft = [-1,1]
+                topright = [1,1]
+                middeleft = [-1,0]
+                middleright = [1,0]
+                bottomleft = [-1,-1]
+                bottommiddle = [0,-1]
+                bottomright = [1,-1]
+
+                topleftnum = check_backwards(lists_of_characterlists,topleft)
+                print(topleftnum)
+             
+
+def check_backwards(lists_of_characterlists,starting_offset):
+    number = ''
+    i = 0
+    while lists_of_characterlists[(starting_offset[0])-i][starting_offset[1]].isdigit():
+        number = number + lists_of_characterlists[(starting_offset[0])-i][starting_offset[1]]
+        i+=1
+    number = number[::-1]
+    return number
 
 
                
 
                 
-def extract_area_as_string(array, x, y, width, height):
-    row_offset = height // 2
-    col_offset = width // 2
 
-    start_row = max(0, x - row_offset)
-    end_row = min(len(array), x + 1 + row_offset)
-
-    start_col = max(0, y - col_offset)
-    end_col = min(len(array[0]), y + 1 + col_offset)
-
-    area_to_extract = [row[start_col:end_col] for row in array[start_row:end_row]]
-
-    area_string = "\n".join([" ".join(map(str, row)) for row in area_to_extract])
-
-    return area_string
 
 
 
