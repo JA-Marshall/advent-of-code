@@ -8,49 +8,48 @@ def main(lines):
     for line in lines:
         chars = list(line)
         buffer = chars[:4]
-        chars = chars[4:]
-        line = list(line)
         
         for i in range(len(line)):
-            print(buffer)
+            # print(buffer)
             if buffer == do_flag:
                 do_enabled = True
             if buffer == dont_flag:
                 do_enabled = False
            
             if buffer == target and do_enabled:
-                
-                numbers_after_mul = line[i+4:i+12]          
-                num1,num2 ='',''      
-                final_num1 = False
-                
-                for i,value in enumerate(numbers_after_mul):
-                    
-                    if value == ',':
-                      
-                        final_num1 = True
-
-                    elif value.isdigit() and final_num1:
-                        num2+= value
-
-                    elif value.isdigit() and final_num1 == False:
-            
-                        num1+= value
-                    if ')' not in numbers_after_mul:
-                        num1, num2 = '',''
-                         
-                if num1 and num2:
-                    num1,num2 = int(num1),int(num2)
-                    total_to_add = num1 * num2
-                    print(f'{num1} {num2}')
-                    total += total_to_add
-                    
-            if len(chars) > 0:         
+                total += parse_match(line[i:i+8])   
+               
+            if chars:         
                 buffer.pop(0)
                 buffer.append(chars.pop(0))
     
     print(total)
 
+def parse_match(numbers_after_mul):
+         
+    num1,num2 ='',''      
+    num1_complete = False
+    print(numbers_after_mul)
+
+    for char in numbers_after_mul:
+        
+        if ')' not in numbers_after_mul:   
+            return 0
+        
+        if char == ',':           
+            num1_complete = True
+
+        elif char.isdigit() and num1_complete == False:
+            num1+= char
+
+        elif char.isdigit() and num1_complete:
+            num2+= char
+
+    if num1 and num2:
+        num1,num2 = int(num1),int(num2)
+    
+        return num1 * num2
+    return 0
     
 if __name__ == '__main__':
     with open('input.txt', 'r') as f:
